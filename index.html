@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mesh Guard | STL Dimension Check</title>
+  <link rel="stylesheet" href="./base.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>STL Dimension Check</h1>
+      <p>Measure the X, Y, and Z spans of an ASCII or binary STL and compare them with your reference in millimeters.</p>
+    </header>
+
+    <form id="check-form" aria-label="Dimension check" novalidate>
+      <fieldset>
+        <legend class="sr-only">STL file and reference dimensions</legend>
+        <div id="drop-zone">
+          <label for="file">Drop an .stl here or choose a file</label>
+          <input id="file" type="file" accept=".stl,model/stl" required>
+        </div>
+        <div>
+          <label for="unit">STL coordinate unit</label>
+          <select id="unit" name="unit" required aria-describedby="unit-help">
+            <option value="">Select a unit</option>
+            <option value="mm">Millimeters (mm)</option>
+            <option value="m">Meters (m)</option>
+          </select>
+          <p id="unit-help" class="field-help">STL files have no unit metadata. Choose the unit used to export the model.</p>
+        </div>
+        <div>
+          <p class="field-help reference-help">Enter all three expected dimensions to compare, or leave them blank to measure only.</p>
+          <div class="dimensions">
+            <label>Expected X (mm)<input name="x" type="number" min="0" step="any"></label>
+            <label>Expected Y (mm)<input name="y" type="number" min="0" step="any"></label>
+            <label>Expected Z (mm)<input name="z" type="number" min="0" step="any"></label>
+            <label>Tolerance (mm)<input name="tolerance" type="number" min="0" step="any" value="0.1"></label>
+          </div>
+        </div>
+        <button type="submit" class="primary">Check dimensions</button>
+      </fieldset>
+    </form>
+
+    <section aria-label="Check result" class="result">
+      <p id="status" role="status">Choose a local STL to begin.</p>
+      <table id="report" aria-label="X, Y, and Z dimensions" hidden>
+        <thead>
+          <tr>
+            <th scope="col">Axis</th>
+            <th scope="col" id="raw-heading">Raw span</th>
+            <th scope="col">Measured (mm)</th>
+            <th scope="col" data-comparison>Expected (mm)</th>
+            <th scope="col" data-comparison>Delta (mm)</th>
+            <th scope="col" data-comparison>Result</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <p id="scale-hint" hidden></p>
+    </section>
+
+    <footer>The file stays in your browser.</footer>
+    <noscript>Enable JavaScript to measure an STL in the browser.</noscript>
+  </main>
+</body>
+</html>

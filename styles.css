@@ -1,0 +1,45 @@
+#unit {
+  margin-left: .5rem;
+  padding: .4rem;
+  border: 1px solid #69837b;
+  border-radius: .25rem;
+  font: inherit;
+  color: inherit;
+  background: white;
+}
+
+.field-help {
+  margin: .35rem 0 0;
+  color: #455d56;
+  font-size: .875rem;
+}
+
+.reference-help { margin: 0 0 .65rem; }
+
+#report {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+#report th, #report td {
+  padding: .45rem .35rem;
+  border-bottom: 1px solid #c1d0c5;
+  text-align: right;
+}
+
+#report th:first-child { text-align: left; }
+#report thead th { vertical-align: bottom; }
+#report td { overflow-wrap: anywhere; }
+#report [data-result="fail"] { color: #8b2926; font-weight: 600; }
+#report [data-result="pass"] { color: #205b3d; }
+
+#scale-hint { margin-bottom: 0; color: #8b2926; }
+
+footer a { color: #285a50; text-underline-offset: .15em; }
+
+@media (max-width: 480px) {
+  #unit { display: block; margin: .35rem 0 0; }
+  #report { font-size: .8rem; }
+  #report th, #report td { padding-inline: .18rem; }
+}
