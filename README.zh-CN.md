@@ -29,6 +29,12 @@
 
 三轴相对预期都接近 `1000×` 或 `0.001×` 时，页面提示核对单位和导出设置；提示本身不修改模型。测量沿 STL 坐标轴进行，模型旋转会改变包围盒跨度。这是尺寸检查，不检查水密性、打印可行性或制造精度。
 
+## 保存参考尺寸
+
+填写全部 X/Y/Z 预期尺寸并完成检查后，点击 **Download expected.json**，保存表单中的参考尺寸和容差，数值单位均为毫米。PASS 和 FAIL 比较结果均可导出。修改输入后，重新检查即可生成更新的下载文件。
+
+文件沿用 [GLB Dimension Check](https://github.com/LeeJUNhao791/glb-dimension-check#check-against-a-json-expectation-file) 的 `expected_mm` 和 `tolerance_mm` 字段，可复用于轴顺序相同的 GLB 导出。
+
 ## 本地运行
 
 使用 Python 3，在仓库根目录提供静态文件服务：
