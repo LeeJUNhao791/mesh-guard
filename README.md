@@ -6,6 +6,16 @@ Open an ASCII or binary STL, choose the unit used on export, and read the X, Y, 
 
 The browser reads the file locally. When all three axes show a similar 1000× or 0.001× difference from the expected dimensions, Mesh Guard flags a possible unit error.
 
+[Open Mesh Guard online](https://leejunhao791.github.io/mesh-guard/).
+
+## Try the sample
+
+Download the [120 × 80 × 40 mm sample cuboid](samples/cuboid-120x80x40-mm.stl) from the app or this repository.
+
+1. Choose the sample STL and select **Millimeters (mm)** as the coordinate unit.
+2. Enter **120**, **80**, and **40** for expected X, Y, and Z in millimeters. Keep the default tolerance of 0.1 mm and click **Check dimensions**. All three axes pass.
+3. With the same file and expected dimensions, select **Meters (m)** and check again. All three axes fail and Mesh Guard shows a 1000× scale hint.
+
 ## Run locally
 
 From the repository root, serve the static files with Python 3.
