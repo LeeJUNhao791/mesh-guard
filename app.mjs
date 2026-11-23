@@ -12,6 +12,8 @@ const rawHeading = document.querySelector("#raw-heading");
 const tableBody = report.querySelector("tbody");
 const comparisonHeaders = report.querySelectorAll("[data-comparison]");
 const hint = document.querySelector("#scale-hint");
+const expectationExport = document.querySelector("#expectation-export");
+const expectationDownload = document.querySelector("#expectation-download");
 const expectedInputs = ["x", "y", "z"].map(axis => form.elements.namedItem(axis));
 const toleranceInput = form.elements.namedItem("tolerance");
 let revision = 0;
@@ -26,6 +28,11 @@ function resetResult(message, result) {
   report.hidden = true;
   tableBody.replaceChildren();
   hint.hidden = true;
+  expectationExport.hidden = true;
+  if (expectationDownload.hasAttribute("href")) {
+    URL.revokeObjectURL(expectationDownload.href);
+    expectationDownload.removeAttribute("href");
+  }
   setStatus(message, result);
   return revision;
 }
@@ -137,6 +144,15 @@ form.addEventListener("submit", async event => {
     const { spans, format } = measureStl(buffer);
     const check = checkDimensions(spans, unit, expected, tolerance);
     showReport(spans, unit, expected, check);
+    if (expected) {
+      const contract = {
+        expected_mm: Object.fromEntries(["x", "y", "z"].map((axis, index) => [axis, expected[index]])),
+        tolerance_mm: tolerance,
+      };
+      const blob = new Blob([JSON.stringify(contract, null, 2) + "\n"], { type: "application/json" });
+      expectationDownload.href = URL.createObjectURL(blob);
+      expectationExport.hidden = false;
+    }
     const result = expected ? (check.within.every(Boolean) ? "pass" : "fail") : "measured";
     const label = expected ? result.toUpperCase() : "Measured";
     setStatus(label + " · " + format + " STL · " + file.name, result);

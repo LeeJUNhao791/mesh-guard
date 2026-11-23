@@ -23,6 +23,12 @@ The online demo and current `main` include **Try sample**, added after v0.1.0.
 
 To try the manual workflow, download the [sample STL](samples/cuboid-120x80x40-mm.stl) and choose or drop it into the checker.
 
+## Save the reference dimensions
+
+After checking a model with all three expected dimensions filled in, click **Download expected.json** to save those reference dimensions and the tolerance in millimeters. Both PASS and FAIL comparisons offer the download. Editing the inputs clears the download until you check again.
+
+The file uses the same `expected_mm` and `tolerance_mm` fields as [GLB Dimension Check](https://github.com/LeeJUNhao791/glb-dimension-check#check-against-a-json-expectation-file), so you can reuse the reference for a GLB export with the same axis order.
+
 ## Run locally
 
 From the repository root, serve the static files with Python 3.
