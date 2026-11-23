@@ -29,7 +29,7 @@ jobs:
         id: check
         run: >
           node mesh-guard-cli/scripts/check_stl.mjs "samples/cuboid-120x80x40-mm.stl"
-          --unit m --expect "samples/expected.json" > report.json
+          --unit mm --expect "samples/expected.json" > report.json
       - name: Upload the dimension report
         if: ${{ !cancelled() && (steps.check.outcome == 'success' || steps.check.outcome == 'failure') }}
         uses: actions/upload-artifact@v7
