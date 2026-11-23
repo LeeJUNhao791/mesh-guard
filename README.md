@@ -41,10 +41,30 @@ python -m http.server 8000 --bind 127.0.0.1
 
 Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/), choose or drop an `.stl` file, select mm or m, and click **Check dimensions**.
 
+## Check an STL from the command line
+
+Use Node.js 22 or newer. Run from the repository root with the bundled sample and reference:
+
+```sh
+node scripts/check_stl.mjs samples/cuboid-120x80x40-mm.stl --unit mm --expect samples/expected.json
+```
+
+For your own STL, provide its path, its export coordinate unit (`mm` or `m`), and the `expected.json` saved from the browser. Quote paths that contain spaces.
+
+Standard output contains a JSON report with measured and expected millimeter dimensions, tolerance, deviations, per-axis verdicts, and the scale hint. Reference values retain their numeric precision.
+
+| Exit code | Status | Meaning |
+| --- | --- | --- |
+| `0` | `pass` | All three axes satisfy the tolerance. |
+| `1` | `fail` | At least one axis is outside tolerance. |
+| `2` | `invalid` | A file or argument is invalid; the JSON includes an `error` message. |
+
+Use the exit code to gate a CI step. To save a report, redirect standard output with `> report.json`; the process keeps the same exit code.
+
 ## Test
 
 ```sh
-node --test tests/test_stl.mjs
+node --test tests/test_stl.mjs tests/test_cli.mjs
 ```
 
 ## Feedback
