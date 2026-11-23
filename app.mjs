@@ -4,6 +4,8 @@ const form = document.querySelector("#check-form");
 const fileInput = document.querySelector("#file");
 const dropZone = document.querySelector("#drop-zone");
 const unitInput = document.querySelector("#unit");
+const sampleButton = document.querySelector("#try-sample");
+const sampleDownload = document.querySelector("#sample-download");
 const status = document.querySelector("#status");
 const report = document.querySelector("#report");
 const rawHeading = document.querySelector("#raw-heading");
@@ -30,7 +32,7 @@ function resetResult(message, result) {
 
 function inputsChanged() {
   const file = fileInput.files[0];
-  resetResult(file ? "Ready to check " + file.name : "Choose a local STL to begin.");
+  resetResult(file ? "Ready to check " + file.name : "Choose a local STL or try the sample.");
 }
 
 function display(value) {
@@ -86,6 +88,32 @@ dropZone.addEventListener("drop", event => {
   }
   fileInput.files = files;
   inputsChanged();
+});
+
+sampleButton.addEventListener("click", async () => {
+  const ticket = resetResult("Loading sample STL…");
+  sampleButton.disabled = true;
+
+  try {
+    const response = await fetch(sampleDownload.href);
+    if (!response.ok) throw new Error("Sample STL request failed.");
+    const sample = await response.blob();
+    if (ticket !== revision) return;
+
+    const files = new DataTransfer();
+    const filename = sampleDownload.pathname.split("/").pop();
+    files.items.add(new File([sample], filename, { type: "model/stl" }));
+    fileInput.files = files.files;
+
+    unitInput.value = "mm";
+    [120, 80, 40].forEach((value, index) => { expectedInputs[index].valueAsNumber = value; });
+    toleranceInput.value = toleranceInput.defaultValue;
+    form.requestSubmit();
+  } catch {
+    if (ticket === revision) setStatus("Could not load the sample STL. Try again or choose a local STL.", "error");
+  } finally {
+    sampleButton.disabled = false;
+  }
 });
 
 form.addEventListener("submit", async event => {
