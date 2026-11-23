@@ -29,6 +29,8 @@ After checking a model with all three expected dimensions filled in, click **Dow
 
 The file uses the same `expected_mm` and `tolerance_mm` fields as [GLB Dimension Check](https://github.com/LeeJUNhao791/glb-dimension-check#check-against-a-json-expectation-file), so you can reuse the reference for a GLB export with the same axis order.
 
+Use **Import expected.json** to restore a saved reference, then click **Check dimensions**. Choose the STL coordinate unit to match its export. The JSON must contain `expected_mm` with numeric `x`, `y`, and `z`; optional `tolerance_mm` defaults to `0.1`. Values must be finite and nonnegative. Unknown fields are rejected. An invalid file shows an error and preserves the form values.
+
 ## Run locally
 
 From the repository root, serve the static files with Python 3.

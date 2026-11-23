@@ -101,3 +101,35 @@ export function checkDimensions(spans, unit, expected, tolerance = 0.1) {
   ) ?? null;
   return { mm, delta, within, scale };
 }
+
+export function parseExpectation(source) {
+  const contract = JSON.parse(source.replace(/^\uFEFF/, ""));
+  if (!contract || typeof contract !== "object" || Array.isArray(contract)) {
+    throw new Error("Expected a JSON object.");
+  }
+  for (const field of Object.keys(contract)) {
+    if (!["expected_mm", "tolerance_mm"].includes(field)) {
+      throw new Error("Unknown field " + field + ".");
+    }
+  }
+  const expected = contract.expected_mm;
+  if (!expected || typeof expected !== "object" || Array.isArray(expected)) {
+    throw new Error("expected_mm must be an object with x, y, and z fields.");
+  }
+  const axes = ["x", "y", "z"];
+  for (const axis of Object.keys(expected)) {
+    if (!axes.includes(axis)) throw new Error("Unknown field expected_mm." + axis + ".");
+  }
+  const values = axes.map(axis => {
+    const value = expected[axis];
+    if (!Number.isFinite(value) || value < 0) {
+      throw new Error("expected_mm." + axis + " must be a finite, nonnegative JSON number in millimeters.");
+    }
+    return value;
+  });
+  const tolerance = Object.hasOwn(contract, "tolerance_mm") ? contract.tolerance_mm : 0.1;
+  if (!Number.isFinite(tolerance) || tolerance < 0) {
+    throw new Error("tolerance_mm must be a finite, nonnegative JSON number in millimeters.");
+  }
+  return { expected: values, tolerance };
+}
