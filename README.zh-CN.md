@@ -47,12 +47,32 @@ python -m http.server 8000 --bind 127.0.0.1
 
 打开 [本地页面](http://127.0.0.1:8000/)。页面不需要构建或额外运行时下载，保留仓库内文件后可在离线环境使用本地服务。
 
+## 命令行检查 STL
+
+使用 Node.js 22 或更新版本，在仓库根目录运行自带样件和参考文件：
+
+```sh
+node scripts/check_stl.mjs samples/cuboid-120x80x40-mm.stl --unit mm --expect samples/expected.json
+```
+
+检查自己的模型时，传入 STL 路径、导出坐标单位（`mm` 或 `m`）以及从网页保存的 `expected.json`。路径含空格时加引号。
+
+标准输出为 JSON，包含实测和预期毫米尺寸、容差、偏差、逐轴判定及比例提示，保留参考数值的精度。
+
+| 退出码 | 状态 | 含义 |
+| --- | --- | --- |
+| `0` | `pass` | 三轴均满足容差。 |
+| `1` | `fail` | 至少一轴超出容差。 |
+| `2` | `invalid` | 文件或参数无效，JSON 中包含 `error` 信息。 |
+
+CI 可直接使用退出码决定是否通过。使用 `> report.json` 保存标准输出时，进程仍返回对应退出码。
+
 ## 测试与反馈
 
 使用 Node.js 22（与 CI 一致）运行现有测试：
 
 ```sh
-node --test tests/test_stl.mjs
+node --test tests/test_stl.mjs tests/test_cli.mjs
 ```
 
 首次使用反馈请回复 [Issue #3](https://github.com/LeeJUNhao791/mesh-guard/issues/3)。可复现的问题请使用 [Bug 模板](https://github.com/LeeJUNhao791/mesh-guard/issues/new?template=bug_report.md)，注明导出单位、X/Y/Z 预期尺寸、容差与结果，并使用可公开的 STL。
