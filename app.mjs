@@ -1,4 +1,4 @@
-import { checkDimensions, measureStl } from "./measure.mjs";
+import { checkDimensions, measureStl, parseExpectation } from "./measure.mjs";
 
 const form = document.querySelector("#check-form");
 const fileInput = document.querySelector("#file");
@@ -14,6 +14,7 @@ const comparisonHeaders = report.querySelectorAll("[data-comparison]");
 const hint = document.querySelector("#scale-hint");
 const expectationExport = document.querySelector("#expectation-export");
 const expectationDownload = document.querySelector("#expectation-download");
+const expectationInput = document.querySelector("#expectation-file");
 const expectedInputs = ["x", "y", "z"].map(axis => form.elements.namedItem(axis));
 const toleranceInput = form.elements.namedItem("tolerance");
 let revision = 0;
@@ -78,6 +79,22 @@ function showReport(spans, unit, expected, check) {
 }
 
 form.addEventListener("input", inputsChanged);
+
+expectationInput.addEventListener("change", async () => {
+  const file = expectationInput.files[0];
+  if (!file) return;
+  expectationInput.value = "";
+  const ticket = resetResult("Reading expected.json…");
+  try {
+    const contract = parseExpectation(await file.text());
+    if (ticket !== revision) return;
+    expectedInputs.forEach((input, index) => { input.valueAsNumber = contract.expected[index]; });
+    toleranceInput.valueAsNumber = contract.tolerance;
+    setStatus("Imported " + file.name + ". Check dimensions to apply.");
+  } catch (error) {
+    if (ticket === revision) setStatus(file.name + " · " + error.message, "error");
+  }
+});
 
 dropZone.addEventListener("dragover", event => {
   event.preventDefault();

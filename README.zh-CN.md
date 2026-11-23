@@ -35,6 +35,8 @@
 
 文件沿用 [GLB Dimension Check](https://github.com/LeeJUNhao791/glb-dimension-check#check-against-a-json-expectation-file) 的 `expected_mm` 和 `tolerance_mm` 字段，可复用于轴顺序相同的 GLB 导出。
 
+通过 **Import expected.json** 恢复参考尺寸，再点击 **Check dimensions** 检查。STL 坐标单位需按模型导出设置选择。JSON 的 `expected_mm` 必须含有数值型 `x`、`y`、`z`，可选的 `tolerance_mm` 默认使用 `0.1`。所有值必须有限且非负，额外字段会被拒绝。文件无效时显示具体错误，并保留原表单数值。
+
 ## 本地运行
 
 使用 Python 3，在仓库根目录提供静态文件服务：

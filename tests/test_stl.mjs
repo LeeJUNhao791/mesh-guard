@@ -1,12 +1,47 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
-import { checkDimensions, measureStl } from "../measure.mjs";
+import { checkDimensions, measureStl, parseExpectation } from "../measure.mjs";
 
 const shapes = [
   [[-2, -4, -1], [8, -4, -1], [8, 16, -1]],
   [[-2, -4, -1], [8, 16, -1], [-2, -4, 29]],
 ];
+
+test("reads the shared expectation format, optional tolerance and UTF-8 BOM", () => {
+  const contract = { expected_mm: { x: 120.000000123, y: 80, z: 0 }, tolerance_mm: 0.0000002 };
+  assert.deepEqual(parseExpectation(JSON.stringify(contract)), {
+    expected: [120.000000123, 80, 0], tolerance: 0.0000002,
+  });
+  assert.deepEqual(parseExpectation("\uFEFF" + JSON.stringify({ expected_mm: { x: 120, y: 80, z: 40 } })), {
+    expected: [120, 80, 40], tolerance: 0.1,
+  });
+});
+
+test("rejects missing axes, unknown fields, arrays and nonnumeric or negative values", () => {
+  const expected = { x: 120, y: 80, z: 40 };
+  for (const contract of [
+    null, [], 5,
+    {}, { expected_mm: [] }, { expected_mm: null },
+    { expected_mm: { x: 120, y: 80 } },
+    { expected_mm: { ...expected, w: 1 } },
+    { expected_mm: expected, status: "pass" },
+    { expected_mm: expected, tolerance_mm: null },
+    { expected_mm: expected, tolerance_mm: "0.1" },
+    { expected_mm: expected, tolerance_mm: -0.1 },
+    { expected_mm: { ...expected, x: "120" } },
+    { expected_mm: { ...expected, y: true } },
+    { expected_mm: { ...expected, z: -1 } },
+  ]) {
+    assert.throws(() => parseExpectation(JSON.stringify(contract)), Error);
+  }
+  assert.throws(() => parseExpectation('{"expected_mm":{"x":120,"y":80,"z":1e999}}'), /expected_mm.z/);
+  assert.throws(() => parseExpectation('{"expected_mm":{"x":120,"y":80,"z":40},"tolerance_mm":1e999}'), /tolerance_mm/);
+});
+
+test("reports malformed expectation JSON", () => {
+  assert.throws(() => parseExpectation('{"expected_mm":'), SyntaxError);
+});
 const encode = text => new TextEncoder().encode(text).buffer;
 
 function asciiStl(triangles = shapes) {
