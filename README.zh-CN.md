@@ -67,6 +67,14 @@ node scripts/check_stl.mjs samples/cuboid-120x80x40-mm.stl --unit mm --expect sa
 
 CI 可直接使用退出码决定是否通过。使用 `> report.json` 保存标准输出时，进程仍返回对应退出码。
 
+## 在拉取请求中检查尺寸
+
+将 [GitHub Actions 工作流](.github/workflows/stl-dimensions.yml) 复制到自己仓库的 `.github/workflows/stl-dimensions.yml`。将示例 STL 和 `expected.json` 的路径替换为自己仓库中的路径，并将 `--unit` 设为 STL 的导出单位（`mm` 或 `m`）。工作流使用 Mesh Guard `v0.2.0` 的命令行工具。
+
+尺寸超出容差或输入无效时，拉取请求中的 **Check STL dimensions** 检查会失败。如需合并前必须通过该检查，在目标分支的保护规则或规则集中将它设为必需的状态检查。
+
+检查通过或失败后，可在该次工作流运行的 **Artifacts** 区域下载 `stl-dimension-report`。完成尺寸比较时，其中的 `report.json` 会包含模型的实测尺寸和预期尺寸。
+
 ## 测试与反馈
 
 使用 Node.js 22（与 CI 一致）运行现有测试：
