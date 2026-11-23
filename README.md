@@ -61,6 +61,16 @@ Standard output contains a JSON report with measured and expected millimeter dim
 
 Use the exit code to gate a CI step. To save a report, redirect standard output with `> report.json`; the process keeps the same exit code.
 
+## Check dimensions on pull requests
+
+Copy the [GitHub Actions workflow](.github/workflows/stl-dimensions.yml) to `.github/workflows/stl-dimensions.yml` in your repository. Replace the sample STL and `expected.json` paths with paths in your repository and set `--unit` to the STL's export unit (`mm` or `m`). The workflow runs the CLI from Mesh Guard `v0.2.0`.
+
+A dimension mismatch or invalid input fails the **Check STL dimensions** pull request check. To require a passing check before merge, add it as a required status check in the target branch's protection rule or ruleset.
+
+After the check passes or fails, download `stl-dimension-report` from the workflow run's **Artifacts** section. Its `report.json` contains the measured and expected model dimensions for completed comparisons.
+
+The same sample STL [passes with mm](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134251030) and [fails with m](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134084816) with a 1000× scale hint. Both runs uploaded a report.
+
 ## Test
 
 ```sh

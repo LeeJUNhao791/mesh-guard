@@ -1,0 +1,39 @@
+name: STL dimensions
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check-dimensions:
+    name: Check STL dimensions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the model repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Check out Mesh Guard v0.2.0
+        uses: actions/checkout@v7
+        with:
+          repository: LeeJUNhao791/mesh-guard
+          ref: refs/tags/v0.2.0
+          path: mesh-guard-cli
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Compare STL dimensions
+        id: check
+        run: >
+          node mesh-guard-cli/scripts/check_stl.mjs "samples/cuboid-120x80x40-mm.stl"
+          --unit mm --expect "samples/expected.json" > report.json
+      - name: Upload the dimension report
+        if: ${{ !cancelled() && (steps.check.outcome == 'success' || steps.check.outcome == 'failure') }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: stl-dimension-report
+          path: report.json
+          if-no-files-found: error
