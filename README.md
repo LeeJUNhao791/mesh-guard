@@ -69,6 +69,8 @@ A dimension mismatch or invalid input fails the **Check STL dimensions** pull re
 
 After the check passes or fails, download `stl-dimension-report` from the workflow run's **Artifacts** section. Its `report.json` contains the measured and expected model dimensions for completed comparisons.
 
+The same sample STL [passes with mm](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134251030) and [fails with m](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134084816) with a 1000× scale hint. Both runs uploaded a report.
+
 ## Test
 
 ```sh

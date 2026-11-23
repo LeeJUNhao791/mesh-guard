@@ -75,6 +75,8 @@ CI 可直接使用退出码决定是否通过。使用 `> report.json` 保存标
 
 检查通过或失败后，可在该次工作流运行的 **Artifacts** 区域下载 `stl-dimension-report`。完成尺寸比较时，其中的 `report.json` 会包含模型的实测尺寸和预期尺寸。
 
+同一个 STL 样例[按 mm 检查通过](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134251030)，[按 m 检查超差](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134084816)并提示 1000× 的比例差异。两次运行都上传了报告。
+
 ## 测试与反馈
 
 使用 Node.js 22（与 CI 一致）运行现有测试：
