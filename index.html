@@ -21,7 +21,10 @@
         <div id="drop-zone">
           <label for="file">Drop an .stl here or choose a file</label>
           <input id="file" type="file" accept=".stl,model/stl" required>
-          <p class="field-help"><a href="./samples/cuboid-120x80x40-mm.stl" download>Download sample STL</a> (120 × 80 × 40 mm)</p>
+          <div class="examples">
+            <button id="try-sample" type="button">Try sample</button>
+            <p class="field-help"><a id="sample-download" href="./samples/cuboid-120x80x40-mm.stl" download>Download sample STL</a> (120 × 80 × 40 mm)</p>
+          </div>
         </div>
         <div>
           <label for="unit">STL coordinate unit</label>
@@ -46,7 +49,7 @@
     </form>
 
     <section aria-label="Check result" class="result">
-      <p id="status" role="status">Choose a local STL to begin.</p>
+      <p id="status" role="status">Choose a local STL or try the sample.</p>
       <table id="report" aria-label="X, Y, and Z dimensions" hidden>
         <thead>
           <tr>

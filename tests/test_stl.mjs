@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 import { checkDimensions, measureStl } from "../measure.mjs";
 
@@ -41,6 +42,11 @@ test("measures X/Y/Z spans across ASCII facets, including scientific notation an
 
 test("measures binary STL whose header starts with solid", () => {
   assert.deepEqual(measureStl(binaryStl()), { format: "Binary", spans: [10, 20, 30] });
+});
+
+test("measures the bundled sample at its advertised 120 × 80 × 40 mm", async () => {
+  const sample = await readFile(new URL("../samples/cuboid-120x80x40-mm.stl", import.meta.url));
+  assert.deepEqual(measureStl(new Uint8Array(sample).buffer).spans, [120, 80, 40]);
 });
 
 test("rejects empty, truncated, malformed and non-finite STL data", () => {

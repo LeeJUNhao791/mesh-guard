@@ -10,11 +10,10 @@ The browser reads the file locally. When all three axes show a similar 1000× or
 
 ## Try the sample
 
-Download the [120 × 80 × 40 mm sample cuboid](samples/cuboid-120x80x40-mm.stl) from the app or this repository.
+1. Click **Try sample**. Mesh Guard loads the cuboid, selects millimeters, fills in **120 × 80 × 40 mm** and the default **0.1 mm** tolerance, and shows **PASS**.
+2. Select **Meters (m)** and click **Check dimensions**. All three axes fail and Mesh Guard shows a **1000×** scale hint.
 
-1. Choose the sample STL and select **Millimeters (mm)** as the coordinate unit.
-2. Enter **120**, **80**, and **40** for expected X, Y, and Z in millimeters. Keep the default tolerance of 0.1 mm and click **Check dimensions**. All three axes pass.
-3. With the same file and expected dimensions, select **Meters (m)** and check again. All three axes fail and Mesh Guard shows a 1000× scale hint.
+To try the manual workflow, download the [sample STL](samples/cuboid-120x80x40-mm.stl) and choose or drop it into the checker.
 
 ## Run locally
 
