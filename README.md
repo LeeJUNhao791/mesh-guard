@@ -118,6 +118,14 @@ Both jobs checked the same STL against 120 × 80 × 40 mm with a 0.1 mm toleranc
 
 <img src="docs/images/mesh-guard-action-m-fail.webp" width="440" alt="GitHub Actions meter job summary showing FAIL, with measured X, Y, and Z dimensions of 120,000, 80,000, and 40,000 mm and a possible 1000× unit mismatch.">
 
+### Mounting plate case
+
+Drawing MP-001 Rev A specifies **64 × 40 × 6 mm (X/Y/Z)** with **±0.20 mm per axis**. Mesh Guard compares the STL's axis-aligned bounding box with these dimensions. [Dimension drawing](https://github.com/LeeJUNhao791/glb-dimension-check/blob/217f678459c5ec3395ce30d0dd1afd8dc1e3a7f1/examples/mesh-guard-mounting-plate/drawing.svg) · [`expected.json`](https://github.com/LeeJUNhao791/glb-dimension-check/blob/217f678459c5ec3395ce30d0dd1afd8dc1e3a7f1/examples/mesh-guard-mounting-plate/expected.json)
+
+1. In a test repository, copy the nominal STL and `expected.json` to `examples/mesh-guard-mounting-plate/`. Copy the workflow to `.github/workflows/` and set `pull_request.branches` to your test base branch. The workflow calls `LeeJUNhao791/mesh-guard@v0.3.0` with `unit: mm`. [Nominal STL](https://github.com/LeeJUNhao791/glb-dimension-check/blob/217f678459c5ec3395ce30d0dd1afd8dc1e3a7f1/examples/mesh-guard-mounting-plate/mounting_plate.stl) · [Caller workflow](https://github.com/LeeJUNhao791/glb-dimension-check/blob/f846f2018a137f970e4d408b7454b02b31810b2a/.github/workflows/mesh-guard-mechanical-trial.yml)
+2. Open a pull request targeting the test base branch. The nominal STL measures **64 × 40 × 6 mm** and passes on all three axes. [Passing run](https://github.com/LeeJUNhao791/glb-dimension-check/actions/runs/45357661645)
+3. In the same pull request, replace `mounting_plate.stl` with the oversized STL, keeping the expectation file and unit. The new model measures **65 × 40 × 6 mm**. Only X fails (**+1.00 mm**), and the check exits with code `1`. A separate step still uploads `report.json` as part of `mounting-plate-dimension-report`. [Oversized STL](https://github.com/LeeJUNhao791/glb-dimension-check/blob/f846f2018a137f970e4d408b7454b02b31810b2a/examples/mesh-guard-mounting-plate/mounting_plate.stl) · [Failing run](https://github.com/LeeJUNhao791/glb-dimension-check/actions/runs/45357817059)
+
 ## Test
 
 ```sh
