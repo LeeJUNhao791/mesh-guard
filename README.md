@@ -104,7 +104,19 @@ jobs:
 
 The action uses Node.js 22 and the CLI's exit codes. The job summary shows expected and actual dimensions on each axis and the scale hint when detected. Download the `stl-dimension-report` artifact from the workflow run even when the check fails.
 
-For an immutable pin, use `LeeJUNhao791/mesh-guard@709e31ae7daecb2ddca4a0ec7b4230d4a29e1eb8`. See the [v0.3.0 release](https://github.com/LeeJUNhao791/mesh-guard/releases/tag/v0.3.0) and the [tagged action run with both reports](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316).
+For an immutable pin, use `LeeJUNhao791/mesh-guard@709e31ae7daecb2ddca4a0ec7b4230d4a29e1eb8`. See the [v0.3.0 release](https://github.com/LeeJUNhao791/mesh-guard/releases/tag/v0.3.0).
+
+### Example job summaries
+
+Both jobs checked the same STL against 120 × 80 × 40 mm with a 0.1 mm tolerance. [View the v0.3.0 validation run](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316).
+
+**Millimeters (`mm`) pass.** The measured dimensions match on all three axes. [Job summary](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316#summary-138220821108) · [JSON report ZIP](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316/artifacts/14890591223)
+
+<img src="docs/images/mesh-guard-action-mm-pass.webp" width="440" alt="GitHub Actions millimeter job summary showing PASS, with measured X, Y, and Z dimensions of 120, 80, and 40 mm.">
+
+**Meters (`m`) fail.** Each measured dimension is 1000× its expected value. [Job summary](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316#summary-138220820780) · [JSON report ZIP](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316/artifacts/14890576244)
+
+<img src="docs/images/mesh-guard-action-m-fail.webp" width="440" alt="GitHub Actions meter job summary showing FAIL, with measured X, Y, and Z dimensions of 120,000, 80,000, and 40,000 mm and a possible 1000× unit mismatch.">
 
 ## Test
 
