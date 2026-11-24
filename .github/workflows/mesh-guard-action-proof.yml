@@ -1,0 +1,41 @@
+name: Mesh Guard action consumer proof
+
+on:
+  push:
+    branches: [verify/mesh-guard-action-1124]
+    paths: ['.github/workflows/mesh-guard-action-proof.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  consumer:
+    name: Consumer check (${{ matrix.unit }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        unit: [mm, m]
+    steps:
+      - name: Check out model inputs
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: LeeJUNhao791/mesh-guard
+          ref: 63c698d494c057981894a4a4b3726bcca8c83394
+          path: consumer inputs
+          persist-credentials: false
+      - name: Check STL dimensions
+        id: mesh
+        uses: LeeJUNhao791/mesh-guard@149f078562ff3f2bcbcc957167b9291ef0abc6c9
+        with:
+          stl: consumer inputs/samples/cuboid-120x80x40-mm.stl
+          expect: consumer inputs/samples/expected.json
+          unit: ${{ matrix.unit }}
+      - name: Upload the dimension report
+        if: ${{ !cancelled() && steps.mesh.outputs.report-path != '' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: stl-dimension-report-${{ matrix.unit }}
+          path: ${{ steps.mesh.outputs.report-path }}
+          if-no-files-found: error
