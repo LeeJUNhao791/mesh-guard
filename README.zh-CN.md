@@ -124,6 +124,14 @@ Action 使用 Node.js 22 和命令行工具的退出码。运行摘要会显示�
 
 <img src="docs/images/mesh-guard-action-m-fail.webp" width="440" alt="GitHub Actions 的米制任务摘要显示 FAIL，X、Y、Z 三轴实测值分别为 120000、80000、40000 mm，并提示可能存在 1000 倍的单位差异。">
 
+### 安装板尺寸检查案例
+
+MP-001 Rev A 图纸规定安装板外形尺寸为 **64 × 40 × 6 mm（X/Y/Z）**，**每轴容差 ±0.20 mm**。Mesh Guard 将 STL 沿坐标轴的包围盒尺寸与这些值比较。[尺寸图](https://github.com/LeeJUNhao791/glb-dimension-check/blob/217f678459c5ec3395ce30d0dd1afd8dc1e3a7f1/examples/mesh-guard-mounting-plate/drawing.svg) · [`expected.json`](https://github.com/LeeJUNhao791/glb-dimension-check/blob/217f678459c5ec3395ce30d0dd1afd8dc1e3a7f1/examples/mesh-guard-mounting-plate/expected.json)
+
+1. 在测试仓库中，把标称 STL 和 `expected.json` 放到 `examples/mesh-guard-mounting-plate/`。将工作流复制到 `.github/workflows/`，把 `pull_request.branches` 设为测试目标分支。工作流以 `unit: mm` 调用 `LeeJUNhao791/mesh-guard@v0.3.0`。[标称 STL](https://github.com/LeeJUNhao791/glb-dimension-check/blob/217f678459c5ec3395ce30d0dd1afd8dc1e3a7f1/examples/mesh-guard-mounting-plate/mounting_plate.stl) · [调用工作流](https://github.com/LeeJUNhao791/glb-dimension-check/blob/f846f2018a137f970e4d408b7454b02b31810b2a/.github/workflows/mesh-guard-mechanical-trial.yml)
+2. 向测试目标分支发起拉取请求。标称 STL 实测 **64 × 40 × 6 mm**，三轴均通过。[通过的运行](https://github.com/LeeJUNhao791/glb-dimension-check/actions/runs/45357661645)
+3. 在同一拉取请求中，用超差 STL 替换 `mounting_plate.stl`，保留参考文件和单位。新模型实测 **65 × 40 × 6 mm**，只有 X 轴超差（**+1.00 mm**），检查以退出码 `1` 失败。独立的上传步骤仍将 `report.json` 打包为 `mounting-plate-dimension-report`。[超差 STL](https://github.com/LeeJUNhao791/glb-dimension-check/blob/f846f2018a137f970e4d408b7454b02b31810b2a/examples/mesh-guard-mounting-plate/mounting_plate.stl) · [失败的运行](https://github.com/LeeJUNhao791/glb-dimension-check/actions/runs/45357817059)
+
 ## 测试与反馈
 
 使用 Node.js 22（与 CI 一致）运行现有测试：
