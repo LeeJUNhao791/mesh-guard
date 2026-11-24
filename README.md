@@ -71,10 +71,31 @@ After the check passes or fails, download `stl-dimension-report` from the workfl
 
 The same sample STL [passes with mm](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134251030) and [fails with m](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134084816) with a 1000× scale hint. Both runs uploaded a report.
 
+## Try the composite action prototype
+
+In your workflow, set `permissions: { contents: read }` and check out your model repository with `persist-credentials: false`. Then add these steps, replacing `COMMIT_SHA` with the full SHA of a commit containing the prototype. Input paths are relative to your workflow workspace unless they are absolute.
+
+```yaml
+- uses: LeeJUNhao791/mesh-guard@COMMIT_SHA
+  id: mesh
+  with:
+    stl: models/part.stl
+    expect: models/expected.json
+    unit: mm
+- uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+  if: ${{ !cancelled() && steps.mesh.outputs.report-path != '' }}
+  with:
+    name: stl-dimension-report
+    path: ${{ steps.mesh.outputs.report-path }}
+    if-no-files-found: error
+```
+
+The action uses Node.js 22 and the CLI's exit codes. The job summary shows expected and actual dimensions on each axis and the scale hint when detected. The upload step saves the CLI's JSON report even when the check fails.
+
 ## Test
 
 ```sh
-node --test tests/test_stl.mjs tests/test_cli.mjs
+node --test tests/test_stl.mjs tests/test_cli.mjs tests/test_action.mjs
 ```
 
 ## Feedback
