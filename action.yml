@@ -1,0 +1,33 @@
+name: Mesh Guard STL dimensions
+description: Compare an STL against expected dimensions and write a JSON report.
+inputs:
+  stl:
+    description: Path to the STL file relative to the caller workspace, or absolute.
+    required: true
+  expect:
+    description: Path to expected.json relative to the caller workspace, or absolute.
+    required: true
+  unit:
+    description: STL export coordinate unit (mm or m).
+    required: true
+outputs:
+  report-path:
+    description: Path to the JSON report on the runner.
+    value: ${{ steps.check.outputs.report-path }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+      with:
+        node-version: '22'
+        package-manager-cache: false
+        token: ''
+    - name: Compare STL dimensions
+      id: check
+      shell: bash
+      env:
+        MESH_GUARD_ACTION_PATH: ${{ github.action_path }}
+        MESH_GUARD_STL: ${{ inputs.stl }}
+        MESH_GUARD_EXPECT: ${{ inputs.expect }}
+        MESH_GUARD_UNIT: ${{ inputs.unit }}
+      run: node "$MESH_GUARD_ACTION_PATH/scripts/run_action.mjs"

@@ -77,12 +77,16 @@ CI 可直接使用退出码决定是否通过。使用 `> report.json` 保存标
 
 同一个 STL 样例[按 mm 检查通过](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134251030)，[按 m 检查超差](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134084816)并提示 1000× 的比例差异。两次运行都上传了报告。
 
+## 试用组合 Action 原型
+
+按 [英文用法示例](README.md#try-the-composite-action-prototype) 将 Action 固定到包含原型的完整提交 SHA，传入 STL、expected.json 和 STL 导出单位。Job Summary 会显示各轴的预期和实测尺寸，识别到比例提示时也会显示。后续上传步骤在检查失败时也能保存 JSON 报告。
+
 ## 测试与反馈
 
 使用 Node.js 22（与 CI 一致）运行现有测试：
 
 ```sh
-node --test tests/test_stl.mjs tests/test_cli.mjs
+node --test tests/test_stl.mjs tests/test_cli.mjs tests/test_action.mjs
 ```
 
 首次使用反馈请回复 [Issue #3](https://github.com/LeeJUNhao791/mesh-guard/issues/3)。可复现的问题请使用 [Bug 模板](https://github.com/LeeJUNhao791/mesh-guard/issues/new?template=bug_report.md)，注明导出单位、X/Y/Z 预期尺寸、容差与结果，并使用可公开的 STL。
