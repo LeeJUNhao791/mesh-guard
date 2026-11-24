@@ -71,26 +71,40 @@ After the check passes or fails, download `stl-dimension-report` from the workfl
 
 The same sample STL [passes with mm](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134251030) and [fails with m](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134084816) with a 1000× scale hint. Both runs uploaded a report.
 
-## Try the composite action prototype
+## Use the GitHub Action (v0.3.0)
 
-In your workflow, set `permissions: { contents: read }` and check out your model repository with `persist-credentials: false`. Then add these steps, replacing `COMMIT_SHA` with the full SHA of a commit containing the prototype. Input paths are relative to your workflow workspace unless they are absolute.
+Copy this workflow to `.github/workflows/mesh-guard.yml` in your repository. Replace `stl` and `expect` with the paths to your STL and `expected.json` relative to the repository root. Set `unit` to the STL export unit (`mm` or `m`).
 
 ```yaml
-- uses: LeeJUNhao791/mesh-guard@COMMIT_SHA
-  id: mesh
-  with:
-    stl: models/part.stl
-    expect: models/expected.json
-    unit: mm
-- uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
-  if: ${{ !cancelled() && steps.mesh.outputs.report-path != '' }}
-  with:
-    name: stl-dimension-report
-    path: ${{ steps.mesh.outputs.report-path }}
-    if-no-files-found: error
+name: Mesh Guard
+on: pull_request
+permissions:
+  contents: read
+
+jobs:
+  check-stl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: LeeJUNhao791/mesh-guard@v0.3.0
+        id: mesh
+        with:
+          stl: models/part.stl
+          expect: models/expected.json
+          unit: mm
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: ${{ !cancelled() && steps.mesh.outputs.report-path != '' }}
+        with:
+          name: stl-dimension-report
+          path: ${{ steps.mesh.outputs.report-path }}
+          if-no-files-found: error
 ```
 
-The action uses Node.js 22 and the CLI's exit codes. The job summary shows expected and actual dimensions on each axis and the scale hint when detected. The upload step saves the CLI's JSON report even when the check fails.
+The action uses Node.js 22 and the CLI's exit codes. The job summary shows expected and actual dimensions on each axis and the scale hint when detected. Download the `stl-dimension-report` artifact from the workflow run even when the check fails.
+
+For an immutable pin, use `LeeJUNhao791/mesh-guard@709e31ae7daecb2ddca4a0ec7b4230d4a29e1eb8`. See the [v0.3.0 release](https://github.com/LeeJUNhao791/mesh-guard/releases/tag/v0.3.0) and the [tagged action run with both reports](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316).
 
 ## Test
 
