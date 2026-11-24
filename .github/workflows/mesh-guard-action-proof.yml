@@ -27,7 +27,7 @@ jobs:
           persist-credentials: false
       - name: Check STL dimensions
         id: mesh
-        uses: LeeJUNhao791/mesh-guard@709e31ae7daecb2ddca4a0ec7b4230d4a29e1eb8
+        uses: LeeJUNhao791/mesh-guard@v0.3.0
         with:
           stl: consumer inputs/samples/cuboid-120x80x40-mm.stl
           expect: consumer inputs/samples/expected.json
