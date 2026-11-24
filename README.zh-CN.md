@@ -110,7 +110,19 @@ jobs:
 
 Action 使用 Node.js 22 和命令行工具的退出码。运行摘要会显示各轴的预期尺寸和实测尺寸，检测到比例差异时也会给出提示。即使检查失败，也可从工作流运行页面下载 `stl-dimension-report` 报告。
 
-如需锁定到不可变的版本，可使用 `LeeJUNhao791/mesh-guard@709e31ae7daecb2ddca4a0ec7b4230d4a29e1eb8`。参见 [v0.3.0 发布说明](https://github.com/LeeJUNhao791/mesh-guard/releases/tag/v0.3.0)和[使用标签运行的工作流及两份报告](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316)。
+如需锁定到不可变的版本，可使用 `LeeJUNhao791/mesh-guard@709e31ae7daecb2ddca4a0ec7b4230d4a29e1eb8`。参见 [v0.3.0 发布说明](https://github.com/LeeJUNhao791/mesh-guard/releases/tag/v0.3.0)。
+
+### 运行摘要示例
+
+两项任务都用同一个 STL，预期尺寸为 120 × 80 × 40 mm，容差为 0.1 mm。[查看 v0.3.0 验证运行](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316)。
+
+**按毫米（`mm`）检查通过。** 三轴实测值均与预期一致。[任务摘要](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316#summary-138220821108) · [JSON 报告压缩包](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316/artifacts/14890591223)
+
+<img src="docs/images/mesh-guard-action-mm-pass.webp" width="440" alt="GitHub Actions 的毫米任务摘要显示 PASS，X、Y、Z 三轴实测值分别为 120、80、40 mm。">
+
+**按米（`m`）检查失败。** 三轴实测值均为预期的 1000 倍。[任务摘要](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316#summary-138220820780) · [JSON 报告压缩包](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316/artifacts/14890576244)
+
+<img src="docs/images/mesh-guard-action-m-fail.webp" width="440" alt="GitHub Actions 的米制任务摘要显示 FAIL，X、Y、Z 三轴实测值分别为 120000、80000、40000 mm，并提示可能存在 1000 倍的单位差异。">
 
 ## 测试与反馈
 
