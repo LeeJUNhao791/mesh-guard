@@ -77,9 +77,40 @@ CI 可直接使用退出码决定是否通过。使用 `> report.json` 保存标
 
 同一个 STL 样例[按 mm 检查通过](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134251030)，[按 m 检查超差](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45134084816)并提示 1000× 的比例差异。两次运行都上传了报告。
 
-## 试用组合 Action 原型
+## 使用 GitHub Action（v0.3.0）
 
-按 [英文用法示例](README.md#try-the-composite-action-prototype) 将 Action 固定到包含原型的完整提交 SHA，传入 STL、expected.json 和 STL 导出单位。Job Summary 会显示各轴的预期和实测尺寸，识别到比例提示时也会显示。后续上传步骤在检查失败时也能保存 JSON 报告。
+将以下工作流复制到自己仓库的 `.github/workflows/mesh-guard.yml`。将 `stl` 和 `expect` 替换成 STL 和 `expected.json` 相对于仓库根目录的路径，将 `unit` 设为 STL 的导出单位（`mm` 或 `m`）。
+
+```yaml
+name: Mesh Guard
+on: pull_request
+permissions:
+  contents: read
+
+jobs:
+  check-stl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: LeeJUNhao791/mesh-guard@v0.3.0
+        id: mesh
+        with:
+          stl: models/part.stl
+          expect: models/expected.json
+          unit: mm
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: ${{ !cancelled() && steps.mesh.outputs.report-path != '' }}
+        with:
+          name: stl-dimension-report
+          path: ${{ steps.mesh.outputs.report-path }}
+          if-no-files-found: error
+```
+
+Action 使用 Node.js 22 和命令行工具的退出码。运行摘要会显示各轴的预期尺寸和实测尺寸，检测到比例差异时也会给出提示。即使检查失败，也可从工作流运行页面下载 `stl-dimension-report` 报告。
+
+如需锁定到不可变的版本，可使用 `LeeJUNhao791/mesh-guard@709e31ae7daecb2ddca4a0ec7b4230d4a29e1eb8`。参见 [v0.3.0 发布说明](https://github.com/LeeJUNhao791/mesh-guard/releases/tag/v0.3.0)和[使用标签运行的工作流及两份报告](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316)。
 
 ## 测试与反馈
 
