@@ -136,6 +136,10 @@ node --test tests/test_stl.mjs tests/test_cli.mjs tests/test_action.mjs
 
 Share first-use feedback in [issue #3](https://github.com/LeeJUNhao791/mesh-guard/issues/3). For a reproducible defect, use the [bug report template](https://github.com/LeeJUNhao791/mesh-guard/issues/new?template=bug_report.md) and a synthetic or redistributable STL.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, verification commands, and the dimension-checking scope.
+
 ## License
 
 Mesh Guard carries forward the local STL prototype and base styling from [GLB Dimension Check](https://github.com/LeeJUNhao791/glb-dimension-check/tree/v0.5.0). See the [MIT license](LICENSE).
