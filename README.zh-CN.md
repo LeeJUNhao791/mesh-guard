@@ -142,6 +142,10 @@ node --test tests/test_stl.mjs tests/test_cli.mjs tests/test_action.mjs
 
 首次使用反馈请回复 [Issue #3](https://github.com/LeeJUNhao791/mesh-guard/issues/3)。可复现的问题请使用 [Bug 模板](https://github.com/LeeJUNhao791/mesh-guard/issues/new?template=bug_report.md)，注明导出单位、X/Y/Z 预期尺寸、容差与结果，并使用可公开的 STL。
 
+## 参与贡献
+
+环境要求、验证命令和尺寸检查范围见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
 ## 许可证
 
 项目沿用 [GLB Dimension Check v0.5.0](https://github.com/LeeJUNhao791/glb-dimension-check/tree/v0.5.0) 中的本地 STL 原型与基础样式，采用 [MIT 许可证](LICENSE)。
