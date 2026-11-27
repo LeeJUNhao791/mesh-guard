@@ -4,6 +4,7 @@ Dates are GitHub Release publication dates in UTC.
 
 ## Unreleased
 
+- Show the existing Action result screenshots near the top of both READMEs and ignore local dependency and OS files.
 - Document the v0.3.0 Action workflow and its job summaries. [#11](https://github.com/LeeJUNhao791/mesh-guard/pull/11), [#12](https://github.com/LeeJUNhao791/mesh-guard/pull/12)
 - Document the downstream mounting-plate trial, including passing and oversized STL reports. This checks digital dimensions. [#13](https://github.com/LeeJUNhao791/mesh-guard/pull/13)
 - Add contributor checks and a pull request template. [#14](https://github.com/LeeJUNhao791/mesh-guard/pull/14)
