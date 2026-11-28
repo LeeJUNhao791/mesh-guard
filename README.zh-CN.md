@@ -10,6 +10,8 @@
 
 文件在本地浏览器中解析，不上传模型。STL 不带单位元数据，必须选择导出时使用的毫米（mm）或米（m）。
 
+v0.3.1 文档补丁见[版本说明](docs/releases/v0.3.1.md)；下方 Action 示例仍使用已发布的 v0.3.0。
+
 ## GitHub Action 结果截图
 
 两项任务都用同一个 STL，预期尺寸为 120 × 80 × 40 mm，容差为 0.1 mm。[查看 v0.3.0 验证运行](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316)。
