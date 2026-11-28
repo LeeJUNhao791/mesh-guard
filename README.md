@@ -14,6 +14,8 @@ The browser reads the file locally. When all three axes show a similar 1000× or
 
 [Open Mesh Guard online](https://leejunhao791.github.io/mesh-guard/).
 
+The v0.3.1 documentation patch is described in the [release notes](docs/releases/v0.3.1.md); the Action examples below use the published v0.3.0 version.
+
 ## GitHub Action result screenshots
 
 Both jobs checked the same STL against 120 × 80 × 40 mm with a 0.1 mm tolerance. [View the v0.3.0 validation run](https://github.com/LeeJUNhao791/mesh-guard/actions/runs/45327599316).

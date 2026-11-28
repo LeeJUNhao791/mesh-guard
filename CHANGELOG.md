@@ -1,8 +1,10 @@
 # Changelog
 
-Dates are GitHub Release publication dates in UTC.
+Dates, where shown, are GitHub Release publication dates in UTC.
 
-## Unreleased
+## v0.3.1
+
+Documentation patch; the STL parser, CLI, browser, and Action implementation are unchanged from v0.3.0. See the [release notes](docs/releases/v0.3.1.md).
 
 - Show the existing Action result screenshots near the top of both READMEs and ignore local dependency and OS files.
 - Document the v0.3.0 Action workflow and its job summaries. [#11](https://github.com/LeeJUNhao791/mesh-guard/pull/11), [#12](https://github.com/LeeJUNhao791/mesh-guard/pull/12)
